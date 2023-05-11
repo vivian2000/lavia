@@ -1,5 +1,7 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:la_via/app_color.dart';
+import 'package:la_via/cam/cam.dart';
 import 'package:la_via/home/air_quality.dart';
 import 'package:la_via/home/home_tap.dart';
 import 'package:la_via/home/setting.dart';
@@ -25,9 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Name Field",style: TextStyle(
+          color: Colors.white,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),),
+        backgroundColor: AppColor.colorGreen,
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await availableCameras().then((value) => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => CameraPage(cameras: value))));
+        },
         backgroundColor: AppColor.colorGreen,
         child: Icon(Icons.qr_code_scanner_outlined),
         shape: StadiumBorder(

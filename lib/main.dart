@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:la_via/app_color.dart';
-import 'package:la_via/home/home_tap.dart';
 import 'package:la_via/home_screen.dart';
+import 'package:la_via/provider/weatherProvider.dart';
+import 'package:la_via/register/managers/login_cubit.dart';
+import 'package:la_via/register/managers/signup_cubit.dart';
+import 'package:la_via/screens/hourlyWeatherScreen.dart';
+import 'package:la_via/screens/weeklyWeatherScreen.dart';
 import 'package:la_via/splash.dart';
-import 'package:la_via/start/add_field.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => WeatherProvider(),
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,17 +22,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'La Via',
-      theme: AppColor.lightTheme,
-      routes: {
-        Splash.routeName: (buildContext) => const Splash(),
-        HomeScreen.routeName: (buildContext) => const HomeScreen(),
-        AddField.routeName: (buildContext) => const AddField(),
-        HomeTap.routeName: (buildContext) => const HomeTap(),
-      },
-      initialRoute: HomeScreen.routeName,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => SignupCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LoginCubit(),
+        ),
+      ],
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppColor.lightTheme,
+        title: 'La Via',
+        home: HomeScreen(),
+        routes: {
+          Splash.routeName: (buildContext) => const Splash(),
+          HomeScreen.routeName: (buildContext) => const HomeScreen(),
+          WeeklyScreen.routeName: (myCtx) => WeeklyScreen(),
+          HourlyScreen.routeName: (myCtx) => HourlyScreen(),
+        },
+      ),
     );
   }
 }
