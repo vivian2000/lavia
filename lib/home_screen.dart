@@ -27,14 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Name Field",style: TextStyle(
-          color: Colors.white,
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-        ),),
-        backgroundColor: AppColor.colorGreen,
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

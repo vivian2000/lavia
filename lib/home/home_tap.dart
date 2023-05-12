@@ -14,6 +14,14 @@ class _HomeTapState extends State<HomeTap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Name Field",style: TextStyle(
+          color: Colors.white,
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),),
+        backgroundColor: AppColor.colorGreen,
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -396,8 +404,7 @@ class _HomeTapState extends State<HomeTap> {
             Divider(
               color: AppColor.colorGreen,
               height: 1,
-            )
-
+            ),
           ],
         ),
       ),

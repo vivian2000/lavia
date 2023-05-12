@@ -160,6 +160,7 @@ class _SignupState extends State<Signup> {
                   SizedBox(height: size.height * 0.01),
                   InkWell(
                     onTap: () {
+                      //Navigator.pushNamed(context, HomeScreen())
                       BlocProvider.of<SignupCubit>(context).signup(
                           firstName.text,
                           lastName.text,
