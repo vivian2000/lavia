@@ -1,6 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:la_via/register/auth_screen.dart';
+import 'package:la_via/screens/landing_page.dart';
 
 class Splash extends StatelessWidget {
   static const String routeName = 'Splash';
@@ -19,6 +19,6 @@ class Splash extends StatelessWidget {
             ),
           ),
         ),
-        nextScreen: const AuthPage());
+        nextScreen:LandingPage());
   }
 }

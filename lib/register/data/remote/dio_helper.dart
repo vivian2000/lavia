@@ -13,9 +13,7 @@ class DioHelper {
     Response response = await dio.get(
       baseUrl + endPoint,
       options: Options(
-        headers: {
-            //api key
-        }
+        headers: {}
       )
     );
     print("After GetData");

@@ -7,6 +7,7 @@ import 'package:la_via/provider/weatherProvider.dart';
 import 'package:la_via/register/managers/login_cubit.dart';
 import 'package:la_via/register/managers/signup_cubit.dart';
 import 'package:la_via/screens/hourlyWeatherScreen.dart';
+import 'package:la_via/screens/landing_page.dart';
 import 'package:la_via/screens/weeklyWeatherScreen.dart';
 import 'package:la_via/splash.dart';
 import 'package:provider/provider.dart';
@@ -35,10 +36,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppColor.lightTheme,
         title: 'La Via',
-        home: HomeScreen(),
+        home: Splash(),
         routes: {
           Splash.routeName: (buildContext) => const Splash(),
-          HomeScreen.routeName: (buildContext) => const HomeScreen(),
+          HomeScreen.routeName: (buildContext) => HomeScreen(),
           WeeklyScreen.routeName: (myCtx) => WeeklyScreen(),
           HourlyScreen.routeName: (myCtx) => HourlyScreen(),
         },

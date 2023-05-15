@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AirQuality extends StatelessWidget {
-  const AirQuality({Key? key}) : super(key: key);
+class Discription extends StatelessWidget {
+  const Discription({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
