@@ -1,12 +1,11 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:la_via/cam/previewPage.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:la_via/home/report/report.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 class CameraPage extends StatefulWidget {
@@ -19,9 +18,19 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  List<String> imagePaths = [];
   late CameraController _cameraController;
   bool _isRearCameraSelected = true;
   File? image;
+  Future<String> saveImageToGallery(File image) async {
+    final appDir = await getTemporaryDirectory();
+    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    final newPath = '${appDir.path}/$fileName.jpg';
+    await image.copy(newPath);
+    await GallerySaver.saveImage(newPath, albumName: 'sas');
+    return newPath;
+  }
+
   @override
   void dispose() {
     _cameraController.dispose();
@@ -44,17 +53,31 @@ class _CameraPageState extends State<CameraPage> {
     try {
       await _cameraController.setFlashMode(FlashMode.off);
       XFile picture = await _cameraController.takePicture();
-      print ('-----------------------------------------------------');
-      print(picture);
+      print('-----------------------------------------------------');
+      print(picture.path);
+
+      File imageFile = File(picture.path);
+      if(imageFile.existsSync()){
+        String imagePath = await saveImageToGallery(imageFile);
+        setState(() {
+          imagePaths.add(imagePath);
+        });}else{print('Error: Image file does not exist');};
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Report(
+                imagePaths,
+              )));
+
       //final String path = await getApplicationDocumentsDirectory().toString();
       //print(path);
       //GallerySaver.saveImage('$path/$picture.path');
-      Navigator.push(
+      /*Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => PreviewPage(
                 picture: picture,
-              )));
+              )));*/
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;
@@ -79,7 +102,7 @@ class _CameraPageState extends State<CameraPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(255, 255, 255, 0),
-          title:const Text ("detect disease",style: TextStyle(color: Colors.black,fontSize: 17) ,),
+          title:const Text ("detect disease",style: TextStyle(color: Colors.white,fontSize: 17) ,),
         ),
         body: SafeArea(
           child: Stack(children: [
@@ -137,9 +160,14 @@ class _CameraPageState extends State<CameraPage> {
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) return;
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
+      if (image != null) {
+        File imageFile = File(image.path);
+        String imagePath = await saveImageToGallery(imageFile);
+        setState(() {
+          imagePaths.add(imagePath);
+          print(imagePaths);
+        });
+      }
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }

@@ -3,12 +3,12 @@ const kGtSectraFine = 'GT Sectra Fine';
 const kTranstionDuration = Duration(milliseconds: 250);
 
 /// Base Url
-String baseUrl = 'http://agricalitresystem.azurewebsites.net';
+String baseUrl = 'http://13.50.238.83:8000/';
 
 /// End Points
-String loginEndPoint = '/api/token/';
-String signupEndPoint = '/api/register/';
-String changepassEndPoint = '/api/change-password/';
+String loginEndPoint = 'api/token/';
+String signupEndPoint = 'api/register/';
+String changepassEndPoint = 'api/change-password/';
 
 class Constants{
   static const String POPPINS = "Poppins";

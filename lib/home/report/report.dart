@@ -1,36 +1,35 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:la_via/home/report/discription_of_disease.dart';
 
 class Report extends StatefulWidget {
    //Report({Key? key}) : super(key: key);
   //Report({XFile? image}) : super(image: image ?? const SizedBox());
-  XFile? image;
+  List? image;
   Report([this.image]);
   @override
   State<Report> createState() => _ReportState();
 }
 
 class _ReportState extends State<Report> {
-  late XFile _translatorModel;
+  late String _translatorModel;
   void initState() {
-    _translatorModel = widget.image!;
+    _translatorModel = widget.image as String;
     images = [_translatorModel];
     super.initState();
   }
   static List<String> names = ["name of plant"];
-  static List<XFile> images = [];
-  final List<Model> det = List.generate(names.length, (index) => Model('${names[index]}', '${images[index]}' as XFile));
+  static List<String> images = [];
+  final List<Model> det = List.generate(names.length, (index) => Model('${names[index]}', '${images[index]}'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView.builder(
-          itemCount: names.length,
-          itemBuilder: (context, index) {
-            return InkWell(
+          itemCount: names.length | images.length == null ? 0 : names.length | images.length,
+          itemBuilder: (context, index) => names.length & images.length == 0 ?
+             Center(child: Text("No Report Yet"),):InkWell(
               onTap: () {
                 Navigator.push(
                   context,
@@ -58,7 +57,7 @@ class _ReportState extends State<Report> {
                       ),
                       child: Center(
                         child: CircleAvatar(
-                          child: Image.file(File(_translatorModel.path)),
+                          child: det[index].image == null ? Center(child: Text("No Report Yet"),) : Image.file(File(det[index].image)),
                         ),
                       ),
                     ),
@@ -66,7 +65,7 @@ class _ReportState extends State<Report> {
                       width: 10,
                     ),
                     Text(
-                      det[index].name,
+                      det[index].name == null ? "No Report Yet" :det[index].name,
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
@@ -78,14 +77,13 @@ class _ReportState extends State<Report> {
                   ],
                 ),
               ),
-            );
-          }),
+            ),
+          ),
     );
   }
 }
 
 class Model{
-  final String name;
-  final XFile image;
+  final String name, image;
   Model(this.name, this.image);
 }
