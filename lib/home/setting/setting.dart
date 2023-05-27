@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:la_via/app_color.dart';
 import 'package:la_via/home/setting/changeEmail.dart';
 import 'package:la_via/home/setting/changeName.dart';
 import 'package:la_via/home/setting/changePassword.dart';
+import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
+import 'package:la_via/register/auth_screen.dart';
 
 class Setting extends StatefulWidget {
-   Setting({Key? key}) : super(key: key);
-
+  Setting({Key? key}) : super(key: key);
 
   @override
   State<Setting> createState() => _SettingState();
@@ -28,116 +31,152 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Stack(children: [
       imgXFile == null
           ? Container(
               color: Colors.white,
             )
           : Image.file(File(imgXFile!.path)),
-      Scaffold(
-        backgroundColor: Colors.transparent.withOpacity(0.87),
-        body: Column(
-          children: [
-            Center(
-              child: Container(
-                padding: EdgeInsets.only(top: 90),
-                child: GestureDetector(
-                  onTap: getImageFromGallery,
-                  child: CircleAvatar(
-                    backgroundImage: imgXFile == null
-                        ? null
-                        : FileImage(File(imgXFile!.path)),
-                    radius: 80,
-                    child: imgXFile == null
-                        ? Icon(
-                            Icons.person_outline,
-                            color: Colors.grey,
-                            size: size.width * 0.1,
-                          )
-                        : null,
-                    backgroundColor: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Spacer(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      BlocConsumer<GetProfileDataCubit, GetProfileDataState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          var data = BlocProvider.of<GetProfileDataCubit>(context).userData;
+          return Scaffold(
+            backgroundColor: Colors.transparent.withOpacity(0.87),
+            body: Column(
               children: [
-                Text(
-                  'Vivian',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 90),
+                    child: GestureDetector(
+                      onTap: getImageFromGallery,
+                      child: CircleAvatar(
+                        backgroundImage: imgXFile == null
+                            ? null
+                            : FileImage(File(imgXFile!.path)),
+                        radius: 80,
+                        child: imgXFile == null
+                            ? Icon(
+                                Icons.person_outline,
+                                color: Colors.grey,
+                                size: size.width * 0.1,
+                              )
+                            : null,
+                        backgroundColor: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  width: 5,
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      data.firstName.toString(),
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      '${data.lastName}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    ),
+                  ],
                 ),
-                Text(
-                  'Emel',
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
+                Spacer(),
+                Container(
+                  height: size.height * 0.5,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30),
+                      topLeft: Radius.circular(30),
+                    ),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 25, top: 25, right: 25),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Edit Profile",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AuthPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                "Log Out",
+                                style: TextStyle(
+                                    color: AppColor.colorGreen,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            )
+                          ],
+                        ),
+                        Spacer(),
+                        Button('Change Name', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeName(),
+                            ),
+                          );
+                        }),
+                        Spacer(),
+                        Button('Change Email', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeEmail(),
+                            ),
+                          );
+                        }),
+                        Spacer(),
+                        Button('Change Password', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangePassword(),
+                            ),
+                          );
+                        }),
+                        Spacer(),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-            Spacer(),
-            Container(
-              height: size.height * 0.5,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(30),
-                    topLeft: Radius.circular(30)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25, top: 25, right: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Edit Profile",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    ),
-                    Spacer(),
-                    Button('Change Name', (){Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangeName(),
-                      ),
-                    );}),
-                    Spacer(),
-                    Button('Change Email', (){Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangeEmail(),
-                      ),
-                    );}),
-                    Spacer(),
-                    Button('Change Password', (){Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChangePassword(),
-                      ),
-                    );}),
-                    Spacer(),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     ]);
   }
 }
-Widget Button (String name, final VoidCallback onTap){
+
+Widget Button(String name, final VoidCallback onTap) {
   return InkWell(
     onTap: onTap,
     child: Container(
@@ -145,8 +184,7 @@ Widget Button (String name, final VoidCallback onTap){
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: Colors.transparent.withOpacity(0.19))),
+          border: Border.all(color: Colors.transparent.withOpacity(0.19))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -165,18 +203,17 @@ Widget Button (String name, final VoidCallback onTap){
                     color: Colors.white,
                     child: Center(
                         child: Icon(
-                          Icons.compare_arrows,
-                          color: Color(0xFF1D592C),
-                          size: 10,
-                        ))),
+                      Icons.compare_arrows,
+                      color: Color(0xFF1D592C),
+                      size: 10,
+                    ))),
               )),
           SizedBox(
             width: 10,
           ),
           Text(
             name,
-            style: TextStyle(
-                fontSize: 18, fontWeight: FontWeight.w600),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           Spacer(),
           Icon(
@@ -187,5 +224,4 @@ Widget Button (String name, final VoidCallback onTap){
       ),
     ),
   );
-
 }

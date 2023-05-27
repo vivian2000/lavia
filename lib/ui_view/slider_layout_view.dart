@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:la_via/constants.dart';
+import 'package:la_via/home/crop/crops_view.dart';
 import 'package:la_via/home_screen.dart';
 import 'package:la_via/models/slider.dart';
 import 'package:la_via/register/auth_screen.dart';

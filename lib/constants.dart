@@ -3,12 +3,20 @@ const kGtSectraFine = 'GT Sectra Fine';
 const kTranstionDuration = Duration(milliseconds: 250);
 
 /// Base Url
-String baseUrl = 'http://13.50.238.83:8000/';
+String baseUrl = 'http://13.49.102.193:8000/api/';
 
 /// End Points
-String loginEndPoint = 'api/token/';
-String signupEndPoint = 'api/register/';
-String changepassEndPoint = 'api/change-password/';
+String loginEndPoint = 'login/';
+String signupEndPoint = 'sign_up/';
+String changepassEndPoint = 'change-password/';
+String getProfileDataEndPoint = 'get_details/';
+String getDetailsEndPoint = 'get_details/';
+String updateProfileEndPoint = 'update_profile/';
+String embeddedsEndPoint = 'embeddeds/';
+String embeddedEndPoint = 'embedded/';
+String imageEndPoint = 'uploadedImage/';
+
+
 
 class Constants{
   static const String POPPINS = "Poppins";

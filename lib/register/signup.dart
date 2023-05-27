@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/app_color.dart';
-import 'package:la_via/home_screen.dart';
+import 'package:la_via/home/crop/crops_view.dart';
 import 'package:la_via/register/managers/signup_cubit.dart';
 import 'package:la_via/register/social_media_button.dart';
 import 'package:la_via/text_form_feild.dart';
@@ -9,31 +9,23 @@ import 'package:la_via/text_form_feild.dart';
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
-
   @override
   State<Signup> createState() => _SignupState();
 }
 
 class _SignupState extends State<Signup> {
   var signUpKey = GlobalKey<FormState>();
-  TextEditingController firstName = TextEditingController();
-  TextEditingController lastName = TextEditingController();
   TextEditingController addField = TextEditingController();
-  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController cPassword = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  bool x = true;
+
   void initState() {
     super.initState();
-    firstName.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
-    lastName.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
     addField.addListener(() {
-      setState(() {}); // setState every time text changes
-    });
-    email.addListener(() {
       setState(() {}); // setState every time text changes
     });
     password.addListener(() {
@@ -42,16 +34,25 @@ class _SignupState extends State<Signup> {
     cPassword.addListener(() {
       setState(() {}); // setState every time text changes
     });
+    email.addListener(() {
+      setState(() {}); // setState every time text changes
+    });
+    firstName.addListener(() {
+      setState(() {}); // setState every time text changes
+    });
+    lastName.addListener(() {
+      setState(() {}); // setState every time text changes
+    });
   }
 
   @override
   void dispose() {
-    firstName.dispose();
-    lastName.dispose();
     addField.dispose();
-    email.dispose();
     password.dispose();
     cPassword.dispose();
+    email.dispose();
+    firstName.dispose();
+    lastName.dispose();
     super.dispose();
   }
 
@@ -64,11 +65,12 @@ class _SignupState extends State<Signup> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => CropsView(),
             ),
           );
         } else if (state is SignupErrorState) {
-          SnackBar snackBar = const SnackBar(content: Center(child: Text('Entry denied')));
+          SnackBar snackBar =
+              const SnackBar(content: Center(child: Text('Entry denied')));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       },
@@ -144,6 +146,16 @@ class _SignupState extends State<Signup> {
                       }
                       return null;
                     },
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          x = !x;
+                        });
+                      },
+                      icon: Icon(x
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined),
+                    ),
                     onChanged: (p0) {},
                   ),
                   SizedBox(height: size.height * 0.01),
@@ -156,6 +168,16 @@ class _SignupState extends State<Signup> {
                       }
                       return null;
                     },
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          x = !x;
+                        });
+                      },
+                      icon: Icon(x
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined),
+                    ),
                     onChanged: (p0) {},
                   ),
                   SizedBox(height: size.height * 0.01),
@@ -163,12 +185,13 @@ class _SignupState extends State<Signup> {
                     onTap: () {
                       //Navigator.pushNamed(context, HomeScreen())
                       BlocProvider.of<SignupCubit>(context).signup(
-                          firstName.text,
-                          lastName.text,
-                          addField.text,
-                          email.text,
-                          password.text,
-                          cPassword.text);
+                        addField.text,
+                        password.text,
+                        cPassword.text,
+                        email.text,
+                        firstName.text,
+                        lastName.text,
+                      );
                     },
                     child: Container(
                       height: 38,

@@ -13,7 +13,7 @@ class DioHelper {
     Response response = await dio.get(
       baseUrl + endPoint,
       options: Options(
-        headers: {}
+        receiveDataWhenStatusError: true,
       )
     );
     print("After GetData");
@@ -29,11 +29,6 @@ class DioHelper {
       Response response = await dio.post(
         baseUrl + endPoint,
         data: body,
-        options: Options(
-          headers: {
-
-          },
-        ),
       );
       if (kDebugMode) {
         print(response.data);

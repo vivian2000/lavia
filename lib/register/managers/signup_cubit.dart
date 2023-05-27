@@ -15,12 +15,12 @@ class SignupCubit extends Cubit<SignupState> {
       String password, String password2) async {
     emit(SignupLoadingState());
     await dioHelper.postData(endPoint: signupEndPoint, body: {
-      'first_name': firstName,
-      'last_name': lastName,
       'username': addField,
-      'email': email,
       'password': password,
       'password2': password2,
+      'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
     }).then((value) {
       print("Success");
       print(value.data);

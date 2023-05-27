@@ -3,9 +3,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:gallery_saver/gallery_saver.dart';
+import 'package:la_via/cam/cam_cubit.dart';
 import 'package:la_via/home/report/report.dart';
+import 'package:la_via/register/data/remote/dio_helper.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 class CameraPage extends StatefulWidget {
@@ -18,6 +21,7 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  DioHelper dio = DioHelper();
   List<String> imagePaths = [];
   late CameraController _cameraController;
   bool _isRearCameraSelected = true;
@@ -42,7 +46,6 @@ class _CameraPageState extends State<CameraPage> {
     super.initState();
     initCamera(widget.cameras![0]);
   }
-
   Future takePicture() async {
     if (!_cameraController.value.isInitialized) {
       return null;
@@ -58,9 +61,19 @@ class _CameraPageState extends State<CameraPage> {
 
       File imageFile = File(picture.path);
       if(imageFile.existsSync()){
-        String imagePath = await saveImageToGallery(imageFile);
+        String imagePath = (await saveImageToGallery(imageFile));
         setState(() {
           imagePaths.add(imagePath);
+          BlocConsumer<CamCubit,CamState>(
+            listener: (context,state){},
+            builder: (context,state) {
+              SnackBar snackBar = const SnackBar(
+                  content: Center(child: Text('Entry denied')));
+              return imageFile == null ?
+              ScaffoldMessenger.of(context).showSnackBar(snackBar) :
+              CamCubit.get(context).cam(image!);
+            },
+          );
         });}else{print('Error: Image file does not exist');};
       Navigator.push(
           context,
@@ -68,21 +81,13 @@ class _CameraPageState extends State<CameraPage> {
               builder: (context) => Report(
                 imagePaths,
               )));
-
-      //final String path = await getApplicationDocumentsDirectory().toString();
-      //print(path);
-      //GallerySaver.saveImage('$path/$picture.path');
-      /*Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PreviewPage(
-                picture: picture,
-              )));*/
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;
     }
-  }
+
+      }
+
 
   Future initCamera(CameraDescription cameraDescription) async {
     _cameraController =
@@ -99,6 +104,9 @@ class _CameraPageState extends State<CameraPage> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<CamCubit, CamState>(
+  listener: (context, state) {},
+  builder: (context, state) {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(255, 255, 255, 0),
@@ -156,20 +164,16 @@ class _CameraPageState extends State<CameraPage> {
                 )),
           ]),
         ));
+  },
+);
   }
   Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image != null) {
-        File imageFile = File(image.path);
-        String imagePath = await saveImageToGallery(imageFile);
-        setState(() {
-          imagePaths.add(imagePath);
-          print(imagePaths);
-        });
-      }
-    } on PlatformException catch (e) {
-      print('Failed to pick image: $e');
-    }
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+    );
+    image = File(pickedFile!.path);
+    print(image?.path);
+    await CamCubit.get(context).cam(image!);
   }
+
 }

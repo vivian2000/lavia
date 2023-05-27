@@ -1,34 +1,28 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:la_via/home/report/discription_of_disease.dart';
 
 class Report extends StatefulWidget {
    //Report({Key? key}) : super(key: key);
   //Report({XFile? image}) : super(image: image ?? const SizedBox());
-  List? image;
-  Report([this.image]);
+  List<String>? imageList;
+  Report([this.imageList]);
   @override
   State<Report> createState() => _ReportState();
 }
 
 class _ReportState extends State<Report> {
-  late String _translatorModel;
-  void initState() {
-    _translatorModel = widget.image as String;
-    images = [_translatorModel];
-    super.initState();
-  }
   static List<String> names = ["name of plant"];
-  static List<String> images = [];
-  final List<Model> det = List.generate(names.length, (index) => Model('${names[index]}', '${images[index]}'));
+  //static List<String> images = [];
+  //final List<Model> det = List.generate(names.length, (index) => Model('${names[index]}', '${widget.image[index]}'));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView.builder(
-          itemCount: names.length | images.length == null ? 0 : names.length | images.length,
-          itemBuilder: (context, index) => names.length & images.length == 0 ?
+          itemCount: widget.imageList == null?0:widget.imageList!.length,
+          //names.length | widget.image!.length == null ? 0 : names.length | widget.image!.length,
+          itemBuilder: (context, index) => names.length & widget.imageList!.length == 0 ?
              Center(child: Text("No Report Yet"),):InkWell(
               onTap: () {
                 Navigator.push(
@@ -57,7 +51,10 @@ class _ReportState extends State<Report> {
                       ),
                       child: Center(
                         child: CircleAvatar(
-                          child: det[index].image == null ? Center(child: Text("No Report Yet"),) : Image.file(File(det[index].image)),
+                          //child: widget.image![index] == null ? Center(child: Text("No Report Yet"),) : Image.file(File(widget.imageList![index])),
+                          // backgroundImage: widget.imageList![index] == null
+                            //  ? const Center(child: Text("No Report Yet"),) : Image.file(File(widget.imageList![index])),
+                          //widget?.image![index]== null ? Center(child: Text("No Report Yet"),) : widget?.image![index],
                         ),
                       ),
                     ),
@@ -65,7 +62,7 @@ class _ReportState extends State<Report> {
                       width: 10,
                     ),
                     Text(
-                      det[index].name == null ? "No Report Yet" :det[index].name,
+                      names[index] == null ? "No Report Yet" : names[index],
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/cam/cam.dart';
 import 'package:la_via/home/report/report.dart';
-import 'package:la_via/home/home_tap.dart';
+import 'package:la_via/home/home_tap/home_tap.dart';
 import 'package:la_via/home/setting/setting.dart';
 import 'package:la_via/home/weather.dart';
 

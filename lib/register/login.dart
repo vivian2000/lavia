@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/app_color.dart';
+import 'package:la_via/home/crop/crops_view.dart';
 import 'package:la_via/home_screen.dart';
 import 'package:la_via/register/managers/login_cubit.dart';
 import 'package:la_via/register/social_media_button.dart';
@@ -15,12 +16,14 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   var loginKey = GlobalKey<FormState>();
-  TextEditingController email = TextEditingController();
+  TextEditingController userName = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool x = true;
+
 
   void initState() {
     super.initState();
-    email.addListener(() {
+    userName.addListener(() {
       setState(() {}); // setState every time text changes
     });
     password.addListener(() {
@@ -30,7 +33,7 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    email.dispose();
+    userName.dispose();
     password.dispose();
     super.dispose();
   }
@@ -40,10 +43,11 @@ class _LoginState extends State<Login> {
     Size size = MediaQuery.of(context).size;
     return BlocConsumer<LoginCubit, LoginState>(listener: (context, state) {
       if (state is LoginSuccessState) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => HomeScreen(),
+             //builder: (context) => CropsView(),
           ),
         );
       } else if (state is LoginErrorState) {
@@ -59,7 +63,8 @@ class _LoginState extends State<Login> {
             child: Column(
               children: [
                 TextFormFieldWidget(
-                  text: 'E-mail',
+                  text: 'Your Field',
+                  controller: userName,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "E_mail must not be empty";
@@ -72,6 +77,7 @@ class _LoginState extends State<Login> {
                 SizedBox(height: size.height * 0.01),
                 TextFormFieldWidget(
                   text: 'Password',
+                  controller: password,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "password must not be empty";
@@ -79,13 +85,23 @@ class _LoginState extends State<Login> {
                       return null;
                     }
                   },
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        x = !x;
+                      });
+                    },
+                    icon: Icon(x
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined),
+                  ),
                   onChanged: (p0) {},
                 ),
                 SizedBox(height: size.height * 0.01),
                 InkWell(
                   onTap: () {
                     BlocProvider.of<LoginCubit>(context)
-                        .login(email.text, password.text);
+                        .login(userName.text, password.text);
                   },
                    child: Container(
                      height: 38,
