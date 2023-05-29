@@ -15,6 +15,8 @@ String updateProfileEndPoint = 'update_profile/';
 String embeddedsEndPoint = 'embeddeds/';
 String embeddedEndPoint = 'embedded/';
 String imageEndPoint = 'uploadedImage/';
+String reportEndPoint = 'reportF/';
+
 
 
 

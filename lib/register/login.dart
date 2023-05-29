@@ -91,9 +91,11 @@ class _LoginState extends State<Login> {
                         x = !x;
                       });
                     },
+                    color: AppColor.colorGreen,
                     icon: Icon(x
                         ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined),
+                        : Icons.visibility_outlined,
+                    color: AppColor.colorGreen,),
                   ),
                   onChanged: (p0) {},
                 ),

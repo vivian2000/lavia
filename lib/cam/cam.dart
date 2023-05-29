@@ -64,23 +64,26 @@ class _CameraPageState extends State<CameraPage> {
         String imagePath = (await saveImageToGallery(imageFile));
         setState(() {
           imagePaths.add(imagePath);
-          BlocConsumer<CamCubit,CamState>(
-            listener: (context,state){},
-            builder: (context,state) {
-              SnackBar snackBar = const SnackBar(
-                  content: Center(child: Text('Entry denied')));
-              return imageFile == null ?
-              ScaffoldMessenger.of(context).showSnackBar(snackBar) :
-              CamCubit.get(context).cam(image!);
+          CamCubit.get(context).cam(imageFile);
+          // BlocConsumer<CamCubit,CamState>(
+          //   listener: (context,state){},
+          //   builder: (context,state) {
+          //     SnackBar snackBar = const SnackBar(
+          //         content: Center(child: Text('Entry denied')));
+          //      return
+              // imageFile == null ?
+              // ScaffoldMessenger.of(context).showSnackBar(snackBar) :
+             // CamCubit.get(context).cam(image!);
             },
           );
-        });}else{print('Error: Image file does not exist');};
+        }else{print('Error: Image file does not exist');};
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => Report(
                 imagePaths,
               )));
+      //Navigator.pop(context);
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;
@@ -171,9 +174,12 @@ class _CameraPageState extends State<CameraPage> {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
+    File x = pickedFile as File;
     image = File(pickedFile!.path);
-    print(image?.path);
-    await CamCubit.get(context).cam(image!);
+    //print(image?.path);
+    print(image!.uri);
+    //print(File(image!.path));
+    await CamCubit.get(context).cam(x);
   }
 
 }

@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/cam/cam_cubit.dart';
 import 'package:la_via/home/home_tap/managers/embedded_data_cubit.dart';
+import 'package:la_via/home/report/managers/disease_cubit.dart';
 import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
 import 'package:la_via/home_screen.dart';
 import 'package:la_via/models/crops.dart';
 import 'package:la_via/models/embeddedData.dart';
+import 'package:la_via/provider/my_auth_cache.dart';
 import 'package:la_via/provider/weatherProvider.dart';
 import 'package:la_via/register/managers/login_cubit.dart';
 import 'package:la_via/register/managers/signup_cubit.dart';
@@ -16,7 +18,9 @@ import 'package:la_via/screens/weeklyWeatherScreen.dart';
 import 'package:la_via/splash.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MyAuthCache.init();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -46,6 +50,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CamCubit(),
+        ),
+        BlocProvider(
+          create: (context) => DiseaseCubit(),
         ),
       ],
       child: GetMaterialApp(

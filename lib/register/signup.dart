@@ -152,6 +152,7 @@ class _SignupState extends State<Signup> {
                           x = !x;
                         });
                       },
+                      color: AppColor.colorGreen,
                       icon: Icon(x
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined),
@@ -174,6 +175,7 @@ class _SignupState extends State<Signup> {
                           x = !x;
                         });
                       },
+                      color: AppColor.colorGreen,
                       icon: Icon(x
                           ? Icons.visibility_off_outlined
                           : Icons.visibility_outlined),

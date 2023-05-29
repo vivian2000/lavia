@@ -4,7 +4,7 @@ import 'package:la_via/register/data/remote/dio_helper.dart';
 class Embedded {
   double? temperature;
   double? humidity;
-  double? light;
+  String? light;
   double? rainfall;
   double? soilMoisture;
   String? updated;
@@ -52,6 +52,7 @@ class EmbeddedService {
     try {
       final response = await dio.getData(endPoint: embeddedEndPoint);
       if (response.statusCode == 200) {
+        print(response.statusCode);
         return response.data;
       } else {
         throw Exception('Failed to fetch embedded data ${response.statusMessage}');

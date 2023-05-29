@@ -8,6 +8,8 @@ import 'package:la_via/home/setting/changeEmail.dart';
 import 'package:la_via/home/setting/changeName.dart';
 import 'package:la_via/home/setting/changePassword.dart';
 import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
+import 'package:la_via/provider/my_auth_cache.dart';
+import 'package:la_via/provider/my_auth_cache_keys.dart';
 import 'package:la_via/register/auth_screen.dart';
 
 class Setting extends StatefulWidget {
@@ -72,7 +74,7 @@ class _SettingState extends State<Setting> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      data.firstName.toString(),
+                      '${MyAuthCache.getString(key: MyAuthCacheKeys.first_name)}',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
@@ -83,7 +85,7 @@ class _SettingState extends State<Setting> {
                       width: 5,
                     ),
                     Text(
-                      '${data.lastName}',
+                      '${MyAuthCache.getString(key: MyAuthCacheKeys.last_name)}',
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,

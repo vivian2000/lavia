@@ -8,7 +8,7 @@ import 'package:la_via/home/setting/setting.dart';
 import 'package:la_via/home/weather.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+
   static const String routeName = 'Home';
 
   @override
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
             side: BorderSide(color: AppColor.colorGreen, width: 4)),
       ),
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         notchMargin: 12,
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
@@ -55,16 +55,22 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedItemColor: AppColor.colorGreen,
           items: [
             BottomNavigationBarItem(
-                icon:Icon( selectedIndex == 0 ?Icons.home:Icons.home_outlined),
+                icon:
+                    Icon(selectedIndex == 0 ? Icons.home : Icons.home_outlined),
                 label: ''),
             BottomNavigationBarItem(
-                icon:Icon( selectedIndex == 1 ?Icons.cloud:Icons.cloud_outlined),
+                icon: Icon(
+                    selectedIndex == 1 ? Icons.cloud : Icons.cloud_outlined),
                 label: ''),
             BottomNavigationBarItem(
-                icon:Icon( selectedIndex == 2 ?Icons.air:Icons.air_outlined,),
+                icon: Icon(
+                  selectedIndex == 2 ? Icons.air : Icons.air_outlined,
+                ),
                 label: ''),
             BottomNavigationBarItem(
-                icon:Icon( selectedIndex == 3 ?Icons.settings:Icons.settings_outlined,),
+                icon: Icon(
+                  selectedIndex == 3 ? Icons.settings : Icons.settings_outlined,
+                ),
                 label: '')
           ],
         ),

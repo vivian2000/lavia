@@ -35,16 +35,26 @@ class CamCubit extends Cubit<CamState> {
   //   });
   // }
 
-  cam(File? img) async{
+  Future<void> cam(File? img) async {
     print(img?.path);
-    emit(CamLoadingState());
-    final request = http.MultipartRequest("PUT", Uri.parse('http://13.49.102.193:8000/api/uploadedImage/'));
-    final header = {"Content_type": "multipart/form-data"};
-    request.files.add(http.MultipartFile(
-        'file', img!.readAsBytes().asStream(), img.lengthSync(),
-        filename: img.path.split('/').last));
-    request.headers.addAll(header);
-    await request.send();
+    final url = Uri.parse('http://13.49.102.193:8000/api/uploadedImage/');
+    final request = http.MultipartRequest('PUT', url);
+    request.headers['Content-Type'] = 'multipart/form-data';
+
+    final bytes = await img!.readAsBytes();
+    final multipartFile = http.MultipartFile.fromBytes(
+      'image',
+      bytes,
+      filename: img.path.split('/').last,
+    );
+    request.files.add(multipartFile);
+    print(multipartFile);
+    final response = await request.send();
+    if (response.statusCode == 200) {
+      print('Image uploaded successfully');
+    } else {
+      print('Image upload failed');
+    }
     //await http.Response.fromStream(myRequest);
     //print(myRequest.statusCode);
     // if (myRequest.statusCode == 200) {

@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/constants.dart';
+import 'package:la_via/provider/my_auth_cache.dart';
+import 'package:la_via/provider/my_auth_cache_keys.dart';
 import 'package:la_via/register/data/remote/dio_helper.dart';
 import 'package:meta/meta.dart';
 
@@ -19,6 +21,13 @@ class LoginCubit extends Cubit<LoginState> {
     }).then((value) {
       print("Success");
       print(value.data);
+      MyAuthCache.putString(
+          key: MyAuthCacheKeys.token, value: value.data['token']);
+      MyAuthCache.putString(key: MyAuthCacheKeys.userName, value: value.data['username']);
+      print('----------------');
+      print(MyAuthCache.getString(key: MyAuthCacheKeys.userName));
+      print('----------------');
+      print('Token is ${MyAuthCache.getString(key: MyAuthCacheKeys.token)}');
       emit(LoginSuccessState());
     }).catchError((error) {
       print("Login Error is $error");

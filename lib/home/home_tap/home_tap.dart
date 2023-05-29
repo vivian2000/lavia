@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/home/home_tap/managers/embedded_data_cubit.dart';
-import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
 import 'package:la_via/models/embeddedData.dart';
+import 'package:la_via/provider/my_auth_cache.dart';
+import 'package:la_via/provider/my_auth_cache_keys.dart';
+import 'package:supercharged/supercharged.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'dart:async';
 
 class HomeTap extends StatefulWidget {
   const HomeTap({Key? key}) : super(key: key);
@@ -18,8 +21,10 @@ class HomeTap extends StatefulWidget {
 class _HomeTapState extends State<HomeTap> {
   @override
   void initState() {
+    // Timer.periodic(const Duration(seconds: 1), updateDataSource);
     super.initState();
   }
+  void updateDataSource(Timer timer){}
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +33,9 @@ class _HomeTapState extends State<HomeTap> {
       create: (context) => EmbeddedDataCubit()..fetchEmededData()..fetchDataInTop(),
       child: BlocConsumer<EmbeddedDataCubit, EmbeddedDataState>(
         listener: (context, state) {
-          if(state is EmbeddedDataSuccessState) {
-
-          }
+          if(state is EmbeddedDataSuccessState) {}
           else if(state is EmbeddedDataErrorState) {
-            SnackBar snackBar = const SnackBar(content: Text('Erro in Get Embedded'));
+            SnackBar snackBar = const SnackBar(content: Text('Error in Get Embedded'));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
@@ -42,8 +45,8 @@ class _HomeTapState extends State<HomeTap> {
           return Scaffold(
             appBar: AppBar(
               leading: Container(),
-              title: const Text(
-                'Vivian',
+              title: Text(
+                '${MyAuthCache.getString(key: MyAuthCacheKeys.userName)}',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -74,7 +77,7 @@ class _HomeTapState extends State<HomeTap> {
                                 axisLineStyle: const AxisLineStyle(thickness: 1.5),
                                 pointers: <GaugePointer>[
                                    RangePointer(
-                                    value: data.embedded.temperature!.toDouble() ?? 50,
+                                    value: data.embedded.temperature?.toDouble() ?? 0,
                                     width: 1.5,
                                     color: const Color(0xFFdd312e),
                                     enableAnimation: true,
@@ -106,7 +109,7 @@ class _HomeTapState extends State<HomeTap> {
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
                                               // child: const Text('73°F',
-                                              child: Text(data.embedded.temperature.toString(),
+                                              child: Text('${(((data.embedded.temperature ?? 0))/ 1024 * 100).toInt()}',
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -135,7 +138,7 @@ class _HomeTapState extends State<HomeTap> {
                                 axisLineStyle: const AxisLineStyle(thickness: 1.5),
                                 pointers: <GaugePointer>[
                                   RangePointer(
-                                    value: data.embedded.humidity!.toDouble(),
+                                    value: data.embedded.humidity?.toDouble() ?? 0,
                                     width: 1.5,
                                     color: const Color(0xFF008ECC),
                                     enableAnimation: true,
@@ -166,7 +169,7 @@ class _HomeTapState extends State<HomeTap> {
                                             padding:
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
-                                              child: Text(data.embedded.humidity.toString(),
+                                              child: Text('${data.embedded.humidity?.toInt() ?? 0} %',
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -195,7 +198,7 @@ class _HomeTapState extends State<HomeTap> {
                                 axisLineStyle: const AxisLineStyle(thickness: 1.5),
                                 pointers: <GaugePointer>[
                                   RangePointer(
-                                    value: data.embedded.soilMoisture!.toDouble(),
+                                    value: data.embedded.soilMoisture?.toDouble() ?? 0,
                                     width: 1.5,
                                     color: const Color(0xFF424242),
                                     enableAnimation: true,
@@ -226,7 +229,7 @@ class _HomeTapState extends State<HomeTap> {
                                             padding:
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
-                                              child: Text(data.embedded.soilMoisture.toString(),
+                                              child: Text('${(((data.embedded.soilMoisture ?? 0)/ 1024 * 100)).toInt()}',
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -265,8 +268,9 @@ class _HomeTapState extends State<HomeTap> {
                                 ),
                                 pointers: <GaugePointer>[
                                   RangePointer(
-                                    value: data.embedded.rainfall!.toDouble(),
+                                    value: 100,
                                     width: 1.5,
+                                    color: data.embedded.rainfall == 1.0 ? Color(0xFF73c5f1) : Colors.grey,
                                     enableAnimation: true,
                                     gradient: const SweepGradient(colors: [
                                       Color(0xFF73c5f1),
@@ -295,7 +299,7 @@ class _HomeTapState extends State<HomeTap> {
                                             padding:
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
-                                              child: Text(data.embedded.rainfall.toString(),
+                                              child: Text('${data.embedded.rainfall?.toDouble() == 1.0 ? "Raining" : "Clear"}',
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -323,10 +327,10 @@ class _HomeTapState extends State<HomeTap> {
                                 showLabels: false,
                                 axisLineStyle: const AxisLineStyle(thickness: 1.5),
                                 pointers: <GaugePointer>[
-                                  const RangePointer(
+                                   RangePointer(
                                     value: 100,
                                     width: 1.5,
-                                    color: Color(0xFF69A297),
+                                    color: data.embedded.pumpOn == true ? Color(0xFF69A297) : Colors.grey,
                                     enableAnimation: true,
                                     gradient: SweepGradient(colors: [
                                       Color(0xFF69A297),
@@ -355,7 +359,7 @@ class _HomeTapState extends State<HomeTap> {
                                             padding:
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
-                                              child: Text(data.embedded.pumpOn.toString(),
+                                              child: Text(data.embedded.pumpOn == true ? "On" : "Off",
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -384,15 +388,10 @@ class _HomeTapState extends State<HomeTap> {
                                 axisLineStyle: const AxisLineStyle(thickness: 1.5),
                                 pointers: <GaugePointer>[
                                   RangePointer(
-                                    value: data.embedded.light!.toDouble(),
+                                    value: 100,
                                     width: 1.5,
                                     color: const Color(0xFFF1BC12),
                                     enableAnimation: true,
-                                    gradient: const SweepGradient(colors: [
-                                      Color(0xFFF1BC12),
-                                    ], stops: [
-                                      1.0,
-                                    ]),
                                   )
                                 ],
                                 annotations: <GaugeAnnotation>[
@@ -415,7 +414,7 @@ class _HomeTapState extends State<HomeTap> {
                                             padding:
                                             const EdgeInsets.fromLTRB(0, 2, 0, 0),
                                             child: Container(
-                                              child: Text(data.embedded.light.toString(),
+                                              child: Text('${data.embedded.light}',
                                                   style: const TextStyle(
                                                       fontWeight: FontWeight.bold,
                                                       fontSize: 10)),
@@ -443,32 +442,32 @@ class _HomeTapState extends State<HomeTap> {
                         return SfCartesianChart(
                           primaryXAxis: CategoryAxis(),
                           series: <ChartSeries>[
-                            LineSeries<EmbeddedData, String>(
+                            LineSeries<EmbeddedData, int>(
                               color: const Color(0xFFdd312e),
                               dataSource: data.embeddedData,
-                              xValueMapper: (data, _) => data.updated ?? '',
-                              yValueMapper: (data, _) => data.temperature ?? 0,
+                              xValueMapper: (data, _) => data.updated?.toInt() ?? 0,
+                              yValueMapper: (data, _) => (((data.temperature ?? 0))/ 1024 * 100).toInt(),
                               name: 'Temperature',
                             ),
-                            LineSeries<EmbeddedData, String>(
+                            LineSeries<EmbeddedData, int>(
                               color: const Color(0xFF008ECC),
                               dataSource: data.embeddedData,
-                              xValueMapper: (data, _) => data.updated ?? '',
-                              yValueMapper: (data, _) => data.humidity ?? 0,
+                              xValueMapper: (data, _) => data.updated?.toInt() ?? 0,
+                              yValueMapper: (data, _) => data.humidity?.toInt() ?? 0,
                               name: 'Humidity',
                             ),
-                            LineSeries<EmbeddedData, String>(
+                            LineSeries<EmbeddedData, int>(
                               color: const Color(0xFF424242),
                               dataSource: data.embeddedData,
-                              xValueMapper: (data, _) => data.updated ?? '',
-                              yValueMapper: (data, _) => data.soilMoisture ?? 0,
+                              xValueMapper: (data, _) => data.updated?.toInt() ?? 0,
+                              yValueMapper: (data, _) => (((data.soilMoisture ?? 0))/ 1024 * 100).toInt(),
                               name: 'Soil Moisture',
                             ),
-                            LineSeries<EmbeddedData, String>(
+                            LineSeries<EmbeddedData, int>(
                               color: const Color(0xFF73c5f1),
                               dataSource: data.embeddedData,
-                              xValueMapper: (data, _) => data.updated ?? '',
-                              yValueMapper: (data, _) => data.rainfall ?? 0,
+                              xValueMapper: (data, _) => data.updated?.toInt() ?? 0,
+                              yValueMapper: (data, _) => data.rainfall?.toInt() ?? 0,
                               name: 'Rain Fall',
                             ),
                           ],
@@ -486,17 +485,3 @@ class _HomeTapState extends State<HomeTap> {
     );
   }
 }
-
-// class ReadsDetails {
-//   ReadsDetails(this.days, this.reads);
-//
-//   final String days;
-//   final double reads;
-// }
-//
-// class ReadsDetails1 {
-//   ReadsDetails1(this.days, this.reead);
-//
-//   final String days;
-//   final double reead;
-// }

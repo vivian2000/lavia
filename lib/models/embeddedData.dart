@@ -6,7 +6,7 @@ import 'package:la_via/register/data/remote/dio_helper.dart';
 class EmbeddedData {
   double? temperature;
   double? humidity;
-  double? light;
+  String? light;
   double? rainfall;
   double? soilMoisture;
   String? updated;
