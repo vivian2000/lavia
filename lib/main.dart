@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/cam/cam_cubit.dart';
+import 'package:la_via/home/crop/managers/crop_cubit.dart';
 import 'package:la_via/home/home_tap/managers/embedded_data_cubit.dart';
 import 'package:la_via/home/report/managers/disease_cubit.dart';
 import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
@@ -48,9 +49,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => GetProfileDataCubit()..getProfileData(),
         ),
-        BlocProvider(
-          create: (context) => CamCubit(),
-        ),
+        BlocProvider(create: (context) => CamCubit()),
+        BlocProvider(create: (context) => CropCubit()..cropFunction()),
         BlocProvider(
           create: (context) => DiseaseCubit()..reportFunction(),
         ),

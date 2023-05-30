@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_via/app_color.dart';
 import 'package:la_via/home/crop/managers/crop_cubit.dart';
+import 'package:la_via/home_screen.dart';
 import 'package:la_via/models/crops.dart';
 
 class CropsView extends StatefulWidget {
-   Crops? cropName;
-   CropsView({this.cropName});
-
   @override
   State<CropsView> createState() => _CropsViewState();
 }
@@ -20,7 +19,7 @@ class _CropsViewState extends State<CropsView> {
     "images/pepper.png",
     "images/potato.png",
     "images/soybean.png",
-    "images/squash.png"
+    "images/squash.png",
     "images/strawberry.png",
     "images/apple.png",
     "images/grape.png",
@@ -41,19 +40,37 @@ class _CropsViewState extends State<CropsView> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        body: Column(children: [
-          Expanded(
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemBuilder: (context, index) {
-                    return BlocProvider(
-                      create: (context) => CropCubit()..cropFunction(),
-                      child: BlocConsumer<CropCubit, CropState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          CropCubit data = CropCubit.get(context);
-                          return Container(
+        appBar: AppBar(
+          backgroundColor: AppColor.colorGreen,
+          title: Text(
+            "What You Plant ?",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        body: BlocConsumer<CropCubit, CropState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            CropCubit cubit = CropCubit.get(context);
+            return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: fruits.length,
+                itemBuilder: (context, index) {
+                  var item = cubit.cropDataModel!.crops![index];
+                  return cubit.cropDataModel != null
+                      ? InkWell(
+                          onTap: () {
+                            cubit.selectUp(item.soilMoistureMin.toString(),
+                                item.soilMoistureMax.toString());
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => HomeScreen(),
+                            ));
+                          },
+                          child: Container(
                             child: Stack(
                                 alignment: AlignmentDirectional.bottomEnd,
                                 children: [
@@ -69,15 +86,14 @@ class _CropsViewState extends State<CropsView> {
                                     padding: EdgeInsets.symmetric(
                                         vertical: 4, horizontal: 8),
                                     // child: Text("${data.cropData[index].crops}"),
-                                    child:
-                                        Text("${widget.cropName!.cropName}"),
+                                    child: Text("${item.cropName ?? ''}"),
                                   ),
                                 ]),
-                          );
-                        },
-                      ),
-                    );
-                  }))
-        ]));
+                          ),
+                        )
+                      : const Center(child: CircularProgressIndicator());
+                });
+          },
+        ));
   }
 }

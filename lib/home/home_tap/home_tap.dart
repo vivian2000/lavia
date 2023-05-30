@@ -4,13 +4,8 @@ import 'package:la_via/app_color.dart';
 import 'package:la_via/home/home_tap/managers/embedded_data_cubit.dart';
 import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
 import 'package:la_via/models/embedded.dart';
-import 'package:la_via/models/embeddedData.dart';
-import 'package:la_via/provider/my_auth_cache.dart';
-import 'package:la_via/provider/my_auth_cache_keys.dart';
-import 'package:supercharged/supercharged.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
-import 'dart:async';
 
 class HomeTap extends StatefulWidget {
   const HomeTap({Key? key}) : super(key: key);
@@ -21,9 +16,6 @@ class HomeTap extends StatefulWidget {
 }
 
 class _HomeTapState extends State<HomeTap> {
-  // Timer? timer;
-  // String timeNow ='';
-  // final now = DateTime.now();
   @override
   void initState() {
     context.read<GetProfileDataCubit>().getProfileData();
@@ -52,7 +44,8 @@ class _HomeTapState extends State<HomeTap> {
             appBar: AppBar(
               leading: Container(),
               title: Text(
-                "${BlocProvider.of<GetProfileDataCubit>(context).userData != null ? BlocProvider.of<GetProfileDataCubit>(context).userData!.username ?? ".." : '..'}  ",
+                "Farm",
+                //"${BlocProvider.of<GetProfileDataCubit>(context).userData != null ? BlocProvider.of<GetProfileDataCubit>(context).userData!.username ?? ".." : '..'}  ",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25,
@@ -70,69 +63,64 @@ class _HomeTapState extends State<HomeTap> {
                     Container(
                       width: 100,
                       height: 100,
-                      child: SfRadialGauge(
-                          enableLoadingAnimation: true,
-                          axes: <RadialAxis>[
-                            RadialAxis(
-                                radiusFactor: 0.5,
-                                interval: 10,
-                                startAngle: 0,
-                                endAngle: 360,
-                                showTicks: false,
-                                showLabels: false,
-                                axisLineStyle:
-                                    const AxisLineStyle(thickness: 1.5),
-                                pointers: <GaugePointer>[
-                                  RangePointer(
-                                    value: (((data.embedded.temperature ?? 0)) /
-                                            1024 *
-                                            100)
-                                        .toDouble(),
-                                    width: 1.5,
-                                    color: const Color(0xFFdd312e),
-                                    enableAnimation: true,
-                                    gradient: const SweepGradient(colors: [
-                                      Color(0xFFdd312e),
-                                    ], stops: [
-                                      1.0,
-                                    ]),
-                                  )
-                                ],
-                                annotations: <GaugeAnnotation>[
-                                  GaugeAnnotation(
-                                      widget: Column(
-                                        children: <Widget>[
-                                          Container(
-                                              width: 20.00,
-                                              height: 20.00,
-                                              margin: const EdgeInsets.fromLTRB(
-                                                  0, 20, 0, 0),
-                                              decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: ExactAssetImage(
-                                                      'images/temp.png'),
-                                                  fit: BoxFit.fitHeight,
-                                                ),
-                                              )),
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                0, 2, 0, 0),
-                                            child: Container(
-                                              // child: const Text('73°F',
-                                              child: Text(
-                                                  '${(((data.embedded.temperature ?? 0)) / 1024 * 100).toInt()}',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 10)),
+                      child: SfRadialGauge(enableLoadingAnimation: true, axes: <
+                          RadialAxis>[
+                        RadialAxis(
+                            radiusFactor: 0.5,
+                            interval: 10,
+                            startAngle: 0,
+                            endAngle: 360,
+                            showTicks: false,
+                            showLabels: false,
+                            axisLineStyle: const AxisLineStyle(thickness: 1.5),
+                            pointers: <GaugePointer>[
+                              RangePointer(
+                                value:
+                                    data.embedded.temperature?.toDouble() ?? 0,
+                                width: 1.5,
+                                color: const Color(0xFFdd312e),
+                                enableAnimation: true,
+                                gradient: const SweepGradient(colors: [
+                                  Color(0xFFdd312e),
+                                ], stops: [
+                                  1.0,
+                                ]),
+                              )
+                            ],
+                            annotations: <GaugeAnnotation>[
+                              GaugeAnnotation(
+                                  widget: Column(
+                                    children: <Widget>[
+                                      Container(
+                                          width: 20.00,
+                                          height: 20.00,
+                                          margin: const EdgeInsets.fromLTRB(
+                                              0, 20, 0, 0),
+                                          decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                              image: ExactAssetImage(
+                                                  'images/temp.png'),
+                                              fit: BoxFit.fitHeight,
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                      angle: 90,
-                                      positionFactor: 0.7)
-                                ])
-                          ]),
+                                          )),
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 2, 0, 0),
+                                        child: Container(
+                                          // child: const Text('73°F',
+                                          child: Text(
+                                              '${data.embedded.temperature?.toInt() ?? 0}',
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 10)),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  angle: 90,
+                                  positionFactor: 0.7)
+                            ])
+                      ]),
                     ),
                     Container(
                       width: 100,
@@ -197,63 +185,69 @@ class _HomeTapState extends State<HomeTap> {
                     Container(
                       width: 100,
                       height: 100,
-                      child: SfRadialGauge(enableLoadingAnimation: true, axes: <
-                          RadialAxis>[
-                        RadialAxis(
-                            radiusFactor: 0.5,
-                            interval: 10,
-                            startAngle: 0,
-                            endAngle: 360,
-                            showTicks: false,
-                            showLabels: false,
-                            axisLineStyle: const AxisLineStyle(thickness: 1.5),
-                            pointers: <GaugePointer>[
-                              RangePointer(
-                                value:
-                                    data.embedded.soilMoisture?.toDouble() ?? 0,
-                                width: 1.5,
-                                color: const Color(0xFF424242),
-                                enableAnimation: true,
-                                gradient: const SweepGradient(colors: [
-                                  Color(0xFF424242),
-                                ], stops: [
-                                  1.0,
-                                ]),
-                              )
-                            ],
-                            annotations: <GaugeAnnotation>[
-                              GaugeAnnotation(
-                                  widget: Column(
-                                    children: <Widget>[
-                                      Container(
-                                          width: 20.00,
-                                          height: 20.00,
-                                          margin: const EdgeInsets.fromLTRB(
-                                              0, 20, 0, 0),
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                              image: ExactAssetImage(
-                                                  'images/soil.png'),
-                                              fit: BoxFit.fitHeight,
+                      child: SfRadialGauge(
+                          enableLoadingAnimation: true,
+                          axes: <RadialAxis>[
+                            RadialAxis(
+                                radiusFactor: 0.5,
+                                interval: 10,
+                                startAngle: 0,
+                                endAngle: 360,
+                                showTicks: false,
+                                showLabels: false,
+                                axisLineStyle:
+                                    const AxisLineStyle(thickness: 1.5),
+                                pointers: <GaugePointer>[
+                                  RangePointer(
+                                    value: (100 -
+                                            ((data.embedded.soilMoisture ?? 0) /
+                                                    1024) *
+                                                100)
+                                        .toDouble(),
+                                    width: 1.5,
+                                    color: const Color(0xFF424242),
+                                    enableAnimation: true,
+                                    gradient: const SweepGradient(colors: [
+                                      Color(0xFF424242),
+                                    ], stops: [
+                                      1.0,
+                                    ]),
+                                  )
+                                ],
+                                annotations: <GaugeAnnotation>[
+                                  GaugeAnnotation(
+                                      widget: Column(
+                                        children: <Widget>[
+                                          Container(
+                                              width: 20.00,
+                                              height: 20.00,
+                                              margin: const EdgeInsets.fromLTRB(
+                                                  0, 20, 0, 0),
+                                              decoration: const BoxDecoration(
+                                                image: DecorationImage(
+                                                  image: ExactAssetImage(
+                                                      'images/soil.png'),
+                                                  fit: BoxFit.fitHeight,
+                                                ),
+                                              )),
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                0, 2, 0, 0),
+                                            child: Container(
+                                              child: Text(
+                                                  '${(100 - ((data.embedded.soilMoisture ?? 0) / 1024) * 100).toInt()} %',
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 10)),
                                             ),
-                                          )),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            0, 2, 0, 0),
-                                        child: Container(
-                                          child: Text(
-                                              '${(((data.embedded.soilMoisture ?? 0) / 1024 * 100)).toInt()}',
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 10)),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  angle: 90,
-                                  positionFactor: 0.7)
-                            ])
-                      ]),
+                                          )
+                                        ],
+                                      ),
+                                      angle: 90,
+                                      positionFactor: 0.7)
+                                ])
+                          ]),
                     ),
                   ],
                 ),
@@ -352,11 +346,6 @@ class _HomeTapState extends State<HomeTap> {
                                         ? Color(0xFF69A297)
                                         : Colors.grey,
                                     enableAnimation: true,
-                                    gradient: SweepGradient(colors: [
-                                      Color(0xFF69A297),
-                                    ], stops: [
-                                      1.0,
-                                    ]),
                                   )
                                 ],
                                 annotations: <GaugeAnnotation>[
@@ -413,7 +402,10 @@ class _HomeTapState extends State<HomeTap> {
                               RangePointer(
                                 value: 100,
                                 width: 1.5,
-                                color: const Color(0xFFF1BC12),
+                                color: data.embedded.light == "Very Light" ||
+                                        data.embedded.light == "Light"
+                                    ? Color(0xFFF1BC12)
+                                    : Colors.grey,
                                 enableAnimation: true,
                               )
                             ],
@@ -490,9 +482,7 @@ class _HomeTapState extends State<HomeTap> {
                                   xValueMapper: (data, _) =>
                                       data.updated!.toString(),
                                   //data.updated?.toInt() ?? 0,
-                                  yValueMapper: (data, _) =>
-                                      ((((data.soilMoisture!)) / 1024) * 100)
-                                          .toInt(),
+                                  yValueMapper: (data, _) => (100 - ((data.soilMoisture ?? 0) / 1024) * 100).toInt(),
                                   name: 'Soil Moisture',
                                 ),
                                 LineSeries<Embedded, String>(

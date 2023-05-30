@@ -8,7 +8,8 @@ import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/constants.dart';
 import 'package:la_via/register/data/remote/dio_helper.dart';
-
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 part 'cam_state.dart';
 
 class CamCubit extends Cubit<CamState> {
@@ -37,14 +38,19 @@ class CamCubit extends Cubit<CamState> {
 
   Future<void> cam(File? img) async {
     print(img?.path);
-    final url = Uri.parse('http://13.49.102.193:8000/api/uploadedImage/');
+    final url = Uri.parse('http://13.49.102.193:8000/api/uploadedImage/16/');
+    //final request = http.put(url);
+    // open a bytestream
+    // var stream = new http.ByteStream(DelegatingStream.typed(img!.openRead()));
+    // get file length
+    // var length = await img.length();
     final request = http.MultipartRequest('PUT', url);
+    // var multipartFile = new http.MultipartFile('file', stream, length,
+    //     filename: basename(img.path));
     request.headers['Content-Type'] = 'multipart/form-data';
 
-    final bytes = await img!.readAsBytes();
-    final multipartFile = http.MultipartFile.fromBytes(
-      'image',
-      bytes,
+    final bytes = await img!.readAsBytesSync();
+    final multipartFile = http.MultipartFile.fromBytes('picture', bytes,
       filename: img.path.split('/').last,
     );
     request.files.add(multipartFile);
@@ -53,6 +59,7 @@ class CamCubit extends Cubit<CamState> {
     if (response.statusCode == 200) {
       print('Image uploaded successfully');
     } else {
+      print(response.statusCode);
       print('Image upload failed');
     }
     //await http.Response.fromStream(myRequest);

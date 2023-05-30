@@ -83,7 +83,7 @@ class _CameraPageState extends State<CameraPage> {
               builder: (context) => Report(
                 imagePaths,
               )));
-      //Navigator.pop(context);
+      Navigator.pop(context);
     } on CameraException catch (e) {
       debugPrint('Error occured while taking picture: $e');
       return null;
@@ -174,12 +174,11 @@ class _CameraPageState extends State<CameraPage> {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
     );
-    File x = pickedFile as File;
-    image = File(pickedFile!.path);
+    // File x = pickedFile;
+    // image = File(pickedFile!.path);
     //print(image?.path);
-    print(image!.uri);
-    //print(File(image!.path));
-    await CamCubit.get(context).cam(x);
+    print(image?.uri);
+    await CamCubit.get(context).cam(File(pickedFile?.path ?? 'Field'));
   }
 
 }

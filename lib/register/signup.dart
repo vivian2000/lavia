@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/home/crop/crops_view.dart';
+import 'package:la_via/home/crop/managers/crop_cubit.dart';
 import 'package:la_via/register/managers/signup_cubit.dart';
 import 'package:la_via/register/social_media_button.dart';
 import 'package:la_via/text_form_feild.dart';
@@ -62,12 +63,13 @@ class _SignupState extends State<Signup> {
     return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state is SignupSuccessState) {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => CropsView(),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CropsView(),
+            ),
+          );
+          context.read<CropCubit>().cropFunction();
         } else if (state is SignupErrorState) {
           SnackBar snackBar =
               const SnackBar(content: Center(child: Text('Entry denied')));
@@ -185,14 +187,13 @@ class _SignupState extends State<Signup> {
                   SizedBox(height: size.height * 0.01),
                   InkWell(
                     onTap: () {
-                      //Navigator.pushNamed(context, HomeScreen())
                       BlocProvider.of<SignupCubit>(context).signup(
-                        addField.text,
-                        password.text,
-                        cPassword.text,
-                        email.text,
-                        firstName.text,
-                        lastName.text,
+                        firstName: firstName.text,
+                        lastName: lastName.text,
+                        addField: addField.text,
+                        email: email.text,
+                        password: password.text,
+                        password2: cPassword.text,
                       );
                     },
                     child: Container(
@@ -216,7 +217,6 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                   const Divider(),
-                  const SocialMediaButton(),
                 ],
               ),
             ),

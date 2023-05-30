@@ -74,7 +74,8 @@ class _SettingState extends State<Setting> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "${  cubit.userData!.firstName ?? ".."}",
+                      "Vivian",
+                      //"${cubit.userData!.firstName ?? ".."}",
                       // '${MyAuthCache.getString(key: MyAuthCacheKeys.first_name)}',
                       style: TextStyle(
                         fontSize: 25,
@@ -86,7 +87,8 @@ class _SettingState extends State<Setting> {
                       width: 5,
                     ),
                     Text(
-                      "${  cubit.userData!.lastName ?? ".."}",
+                      "Emel",
+                      //"${cubit.userData!.lastName ?? ".."}",
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,

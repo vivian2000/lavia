@@ -86,7 +86,7 @@ class _SliderLayoutViewState extends State<SliderLayoutView> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => CropsView()));
+                                  builder: (_) => AuthPage()));
                         },
                         child: Padding(
                           padding:

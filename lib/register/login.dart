@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/app_color.dart';
 import 'package:la_via/home/crop/crops_view.dart';
+import 'package:la_via/home/crop/managers/crop_cubit.dart';
 import 'package:la_via/home_screen.dart';
 import 'package:la_via/register/managers/login_cubit.dart';
 import 'package:la_via/register/social_media_button.dart';
@@ -47,9 +48,9 @@ class _LoginState extends State<Login> {
           context,
           MaterialPageRoute(
             builder: (context) => HomeScreen(),
-             //builder: (context) => CropsView(),
           ),
         );
+        context.read<CropCubit>().cropFunction();
       } else if (state is LoginErrorState) {
         SnackBar snackBar = const SnackBar(content: Center(child: Text('Entry denied')));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -126,7 +127,6 @@ class _LoginState extends State<Login> {
                    ),
                 ),
                 const Divider(),
-                const SocialMediaButton(),
               ],
             ),
           ),

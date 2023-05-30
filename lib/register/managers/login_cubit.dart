@@ -21,13 +21,13 @@ class LoginCubit extends Cubit<LoginState> {
     }).then((value) {
       print("Success");
       print(value.data);
-      MyAuthCache.putString(
-          key: MyAuthCacheKeys.token, value: value.data['token']);
-      MyAuthCache.putString(key: MyAuthCacheKeys.userName, value: value.data['username']);
-      print('----------------');
-      print(MyAuthCache.getString(key: MyAuthCacheKeys.userName));
-      print('----------------');
-      print('Token is ${MyAuthCache.getString(key: MyAuthCacheKeys.token)}');
+      // MyAuthCache.putString(
+      //     key: MyAuthCacheKeys.token, value: value.data['token']);
+      // MyAuthCache.putString(key: MyAuthCacheKeys.userName, value: value.data['username']);
+      // print('----------------');
+      // print(MyAuthCache.getString(key: MyAuthCacheKeys.userName));
+      // print('----------------');
+      // print('Token is ${MyAuthCache.getString(key: MyAuthCacheKeys.token)}');
       emit(LoginSuccessState());
     }).catchError((error) {
       print("Login Error is $error");

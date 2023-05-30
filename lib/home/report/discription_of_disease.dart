@@ -38,6 +38,7 @@ class Discription extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 25, fontWeight: FontWeight.w500),
                             ),
+                            SizedBox(height: 15,),
                             Text(
                               'Confidence',
                               style: TextStyle(
@@ -45,13 +46,14 @@ class Discription extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
+                            SizedBox(height: 15,),
                             Text(
                               '${report.confidence}',
                               style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
                               ),
                             ),
+                            SizedBox(height: 15,),
                             Text(
                               'Discription',
                               style: TextStyle(
@@ -59,11 +61,11 @@ class Discription extends StatelessWidget {
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
+                            SizedBox(height: 15,),
                             Text(
                               '${report.description}',
                               style: TextStyle(
                                 fontSize: 15,
-                                fontWeight: FontWeight.w700,
                               ),
                             )
                           ]),
