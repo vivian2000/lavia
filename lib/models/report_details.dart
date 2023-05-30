@@ -13,7 +13,7 @@ class ReportDetails {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (this.reports != null) {
       data['Reports'] = this.reports!.map((v) => v.toJson()).toList();
     }
@@ -37,7 +37,7 @@ class Reports {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['plant_name'] = this.plantName;
     data['confidence'] = this.confidence;

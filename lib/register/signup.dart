@@ -62,12 +62,12 @@ class _SignupState extends State<Signup> {
     return BlocConsumer<SignupCubit, SignupState>(
       listener: (context, state) {
         if (state is SignupSuccessState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CropsView(),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => CropsView(),
+          //   ),
+          // );
         } else if (state is SignupErrorState) {
           SnackBar snackBar =
               const SnackBar(content: Center(child: Text('Entry denied')));

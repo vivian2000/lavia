@@ -9,14 +9,14 @@ class DioHelper {
   Dio dio = Dio();
 
   Future<Response> getData({required String endPoint}) async {
-    print("In GetData");
+    // print("In GetData");
     Response response = await dio.get(
       baseUrl + endPoint,
       options: Options(
         receiveDataWhenStatusError: true,
       )
     );
-    print("After GetData");
+    // print("After GetData");
     return response;
   }
   Future<Response> postData({

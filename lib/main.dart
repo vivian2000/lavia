@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           create: (context) => CamCubit(),
         ),
         BlocProvider(
-          create: (context) => DiseaseCubit(),
+          create: (context) => DiseaseCubit()..reportFunction(),
         ),
       ],
       child: GetMaterialApp(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_via/home/crop/managers/crop_cubit.dart';
+import 'package:la_via/models/crops.dart';
 
 class CropsView extends StatefulWidget {
-  const CropsView({Key? key}) : super(key: key);
+   Crops? cropName;
+   CropsView({this.cropName});
 
   @override
   State<CropsView> createState() => _CropsViewState();
@@ -18,13 +20,13 @@ class _CropsViewState extends State<CropsView> {
     "images/pepper.png",
     "images/potato.png",
     "images/soybean.png",
-    //"images/squash.png"
+    "images/squash.png"
     "images/strawberry.png",
     "images/apple.png",
     "images/grape.png",
     "images/orange.png",
-    //"images/raspberry.png",
-    //"images/tomato.png",
+    "images/raspberry.png",
+    "images/tomato.png",
   ];
 
   @override
@@ -68,7 +70,7 @@ class _CropsViewState extends State<CropsView> {
                                         vertical: 4, horizontal: 8),
                                     // child: Text("${data.cropData[index].crops}"),
                                     child:
-                                        Text("${data.cropData[index].crops}"),
+                                        Text("${widget.cropName!.cropName}"),
                                   ),
                                 ]),
                           );

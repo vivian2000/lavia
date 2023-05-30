@@ -42,7 +42,7 @@ class _SettingState extends State<Setting> {
       BlocConsumer<GetProfileDataCubit, GetProfileDataState>(
         listener: (context, state) {},
         builder: (context, state) {
-          var data = BlocProvider.of<GetProfileDataCubit>(context).userData;
+          var cubit = GetProfileDataCubit.get(context);
           return Scaffold(
             backgroundColor: Colors.transparent.withOpacity(0.87),
             body: Column(
@@ -74,7 +74,8 @@ class _SettingState extends State<Setting> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${MyAuthCache.getString(key: MyAuthCacheKeys.first_name)}',
+                      "${  cubit.userData!.firstName ?? ".."}",
+                      // '${MyAuthCache.getString(key: MyAuthCacheKeys.first_name)}',
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w700,
@@ -85,7 +86,7 @@ class _SettingState extends State<Setting> {
                       width: 5,
                     ),
                     Text(
-                      '${MyAuthCache.getString(key: MyAuthCacheKeys.last_name)}',
+                      "${  cubit.userData!.lastName ?? ".."}",
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,

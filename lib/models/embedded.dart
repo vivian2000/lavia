@@ -1,6 +1,29 @@
 import 'package:la_via/constants.dart';
 import 'package:la_via/register/data/remote/dio_helper.dart';
 
+class EmbeddMdeol {
+  List<Embedded>? embeddeds;
+
+  EmbeddMdeol({this.embeddeds});
+
+  EmbeddMdeol.fromJson(Map<String, dynamic> json) {
+    if (json['embeddeds'] != null) {
+      embeddeds = <Embedded>[];
+      json['embeddeds'].forEach((v) {
+        embeddeds!.add(new Embedded.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.embeddeds != null) {
+      data['embeddeds'] = this.embeddeds!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
 class Embedded {
   double? temperature;
   double? humidity;
@@ -62,3 +85,4 @@ class EmbeddedService {
     }
   }
 }
+
