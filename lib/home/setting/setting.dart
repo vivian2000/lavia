@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,8 +7,6 @@ import 'package:la_via/home/setting/changeEmail.dart';
 import 'package:la_via/home/setting/changeName.dart';
 import 'package:la_via/home/setting/changePassword.dart';
 import 'package:la_via/home/setting/managers/get_profile_data_cubit.dart';
-import 'package:la_via/provider/my_auth_cache.dart';
-import 'package:la_via/provider/my_auth_cache_keys.dart';
 import 'package:la_via/register/auth_screen.dart';
 
 class Setting extends StatefulWidget {
@@ -42,7 +39,7 @@ class _SettingState extends State<Setting> {
       BlocConsumer<GetProfileDataCubit, GetProfileDataState>(
         listener: (context, state) {},
         builder: (context, state) {
-          var cubit = GetProfileDataCubit.get(context);
+          //var cubit = GetProfileDataCubit.get(context);
           return Scaffold(
             backgroundColor: Colors.transparent.withOpacity(0.87),
             body: Column(
