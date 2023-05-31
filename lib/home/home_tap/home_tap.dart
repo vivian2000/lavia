@@ -57,31 +57,31 @@ class _HomeTapState extends State<HomeTap> {
         },
         builder: (context, state) {
           EmbeddedDataCubit data = EmbeddedDataCubit.get(context);
-          return SmartRefresher(
-            controller: _refreshController,
-            header: WaterDropHeader(
-              waterDropColor: AppColor.colorGreen,
-              refresh: MyLoading(),
-              complete: Container(),
-              completeDuration: Duration.zero,
-            ),
-            onRefresh: () => getData(),
-            child: Scaffold(
-              appBar: AppBar(
-                leading: Container(),
-                title: Text(
-                  "Farm",
-                  //"${BlocProvider.of<GetProfileDataCubit>(context).userData != null ? BlocProvider.of<GetProfileDataCubit>(context).userData!.username ?? ".." : '..'}  ",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
+          return Scaffold(
+            appBar: AppBar(
+              leading: Container(),
+              title: Text(
+                "Farm",
+                //"${BlocProvider.of<GetProfileDataCubit>(context).userData != null ? BlocProvider.of<GetProfileDataCubit>(context).userData!.username ?? ".." : '..'}  ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
                 ),
-                backgroundColor: AppColor.colorGreen,
               ),
-              backgroundColor: Colors.white,
-              body: Column(
+              backgroundColor: AppColor.colorGreen,
+            ),
+            backgroundColor: Colors.white,
+            body: SmartRefresher(
+              controller: _refreshController,
+              header: WaterDropHeader(
+                waterDropColor: AppColor.colorGreen,
+                refresh: MyLoading(),
+                complete: Container(),
+                completeDuration: Duration.zero,
+              ),
+              onRefresh: () => getData(),
+              child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
